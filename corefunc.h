@@ -22,10 +22,10 @@
 
 #pragma once
 //Customing GrowID
-string Growid_acc = "sakgayyyy1";
+string Growid_acc = "sakgay31";
 
 //Customing Password
-string Password_acc = "test1234@";
+string Password_acc = "loler1234@";
 
 //Customing Gmail
 string Gmail_acc = "Gmail";
