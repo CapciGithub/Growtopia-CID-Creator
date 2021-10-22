@@ -10,3 +10,7 @@
 * After terminal loaded enter those commands: chmod +x build.sh and hit enter then ./build* and wait for it to load. ( Note: It will ask you this: Do you want to continue? [Y/n] write y into terminal and hit enter button )
 * If you can see this message on your terminal: Tool succesfuly builded, you can start creating ID by typing ./createid then type ./createid but, If you can't see that message write ./build* again.
 * If you want to stop creating do CTRL+C and to see download created accounts write this: cloudshell download acc.txt and click the download button.
+
+### How to use CID-Creator? ( Tutorial with Video )
+
+* https://streamable.com/k6nhvk
