@@ -1,4 +1,3 @@
-#pragma once
 #include "proton/variant.hpp"
 #include "enet/include/enet.h"
 #include <string>
@@ -14,9 +13,30 @@
 #include <stdint.h>
 #include "json.hpp"
 #include "packet.h"
-#include "customing.h"
+#include <string>
 #define byte uint8_t
 #define BYTE uint8_t
+
+
+//This Is The Customization Area
+
+#pragma once
+//Customing GrowID
+string Growid_acc = "sakgayyyy1";
+
+//Customing Password
+string Password_acc = "test1234@";
+
+//Customing Gmail
+string Gmail_acc = "Gmail";
+
+//Customing Start From (Account)
+int START_ACC = 1;
+
+//Customing Start From (Gmail)
+int START_GMAIL = 1;
+
+
 
 typedef unsigned long DWORD;
 typedef unsigned long dword;
