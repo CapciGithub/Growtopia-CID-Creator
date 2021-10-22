@@ -1,6 +1,6 @@
 #pragma once
 
-//    Grotopia Bot
+//    Growtopia Bot
 //    Copyright (C) 2018  Growtopia Noobs
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,6 @@
 
 #include "utilsfunc.h"
 #include "corefunc.h"
-#include "userfunc.h"
 #include "enet/include/enet.h"
 //#define WORLD_GO
 using namespace std;
@@ -132,19 +131,13 @@ void GrowtopiaBot::packet_unknown(ENetPacket* packet)
 }
 void GrowtopiaBot::WhenConnected()
 {
-	cout << uname << " Connected to server!" << endl;
+	cout << uname << " Connected to server, creating account!" << endl;
 }
 
 void GrowtopiaBot::WhenDisconnected()
 {
 	cout << uname << " Disconnected from server..." << endl;
 	connectClient();
-}
-int counter = 0; // 10ms per step
-uint64_t newPut = 0;
-uint64_t GetCurrentTimeInternal() {
-	auto duration = std::chrono::system_clock::now().time_since_epoch();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 }
 
 void GrowtopiaBot::userInit() {
