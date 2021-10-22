@@ -19,43 +19,6 @@ using json = nlohmann::json;
 using namespace std;
 vector<GrowtopiaBot> bots;
 
-GrowtopiaBot bot1 = {"", "", "", -1};
-void BroadCastGoWorld(string name) {
-	bot1.gotow(name);
-}
-void BroadCastPacket(int typ, string text) {
-	bot1.packetPeer(typ, text);
-}
-string getBotPos() {
-	string datas = "";
-	if (bot1.getPeer()) datas += "BOT 1: x:" + to_string(bot1.localX) + " y: " + to_string(bot1.localY) + "\n";
-	return datas;
-}
-void input() {
-	int c = 0;
-	while (1) {
-		string data;
-		getline(cin, data);
-		if (data == "/bot") {
-			if (bot1.getPeer()) cout << bot1.uname << " At " << bot1.world->name << endl;
-		}
-		else if (data.find("/say ") != std::string::npos) BroadCastPacket(2, "action|input\n|text|" + data.substr(5));
-		else if (data == "/status") {
-			string status = "";
-			if (bot1.getPeer()); status += "BOT 1: ON\n";
-			cout << status << endl;
-		}
-		else if (data=="/pos") getBotPos();
-		else if (data=="/help") cout << "Console Command: /clear, go <name>, /status, /bot (print bot world), /say <text>,/pos" << endl;
-		else if (data.find("/go ") != std::string::npos) {
-			string wr = data.substr(4);
-			BroadCastGoWorld(wr);
-			cout << "Going to: " << wr << endl;
-		}
-		else if (data=="/clear") system("clear");
-	}
-}
-
 GrowtopiaBot makeBot(string user, string pass, string host, int port, string vers, string wname) {
 	GrowtopiaBot bot = {user, pass, host, port};
 	bot.gameVersion = vers;
