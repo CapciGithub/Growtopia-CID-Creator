@@ -1,153 +1,85 @@
-#pragma once
+// CPPBot.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
-//    Grotopia Bot
-//    Copyright (C) 2018  Growtopia Noobs
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU Affero General Public License as published
-//    by the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU Affero General Public License for more details.
-//
-//    You should have received a copy of the GNU Affero General Public License
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#include "json.hpp"
-#include <sstream>
-#include <vector>
-#include <limits>
-#include <math.h>
-#include <string>
 #include <iostream>
-#include <regex>
-#include <iterator>
-#include <algorithm>
-
-#include "utilsfunc.h"
+#include <fstream>
+#include <future>
+#include <thread>
+#include <chrono>
 #include "corefunc.h"
 #include "userfunc.h"
-#include "enet/include/enet.h"
-//#define WORLD_GO
+#include <string>
+#include <unistd.h>
+#include <stdint.h>
+#include "json.hpp"
+//#include <curses.h>
+//#include <conio.h>
+//#include <windows.h>
+
+using json = nlohmann::json;
 using namespace std;
-char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7',
-'8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+vector<GrowtopiaBot> bots;
 
-std::string hexStr(unsigned char data)
-{
-	std::string s(2, ' ');
-	s[0] = hexmap[(data & 0xF0) >> 4];
-	s[1] = hexmap[data & 0x0F];
-	return s;
+GrowtopiaBot bot1 = {"", "", "", -1};
+void BroadCastGoWorld(string name) {
+	bot1.gotow(name);
 }
-
-string generateMeta()
-{
-	string x = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
-	return x;
+void BroadCastPacket(int typ, string text) {
+	bot1.packetPeer(typ, text);
 }
-
-string generateMac()
-{
-	string x;
-	for (int i = 0; i < 6; i++)
-	{
-		x += hexStr(rand());
-		if (i != 5)
-			x += ":";
-	}
-	return x;
+string getBotPos() {
+	string datas = "";
+	if (bot1.getPeer()) datas += "BOT 1: x:" + to_string(bot1.localX) + " y: " + to_string(bot1.localY) + "\n";
+	return datas;
 }
-
-string generateRid()
-{
-	string x;
-	for (int i = 0; i < 16; i++)
-	{
-		x += hexStr(rand());
-	}
-	for (auto & c : x) c = toupper(c);
-	return x;
-}
-
-string stripMessage(string msg) {
-	regex e("\\x60[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]\\{};':\"\\\\|,.<>\\/?]");
-	string result = regex_replace(msg, e, "");
-	result.erase(std::remove(result.begin(), result.end(), '`'), result.end());
-	return result;
-}
-
-void GrowtopiaBot::onLoginRequested()
-{
-	string token;
-	if (!login_user && !login_token) {
-		token = "";
-	} else {
-		token = "\nuser|" + std::to_string(login_user) + "\ntoken|" + std::to_string(login_token);
-	}
-	string ver = gameVersion;
-	string hash = std::to_string((unsigned int)rand());
-	string hash2 = std::to_string((unsigned int)rand());
-	//string packet = "Logging on: " + uname + " Token: " + to_string(login_token) + " UserID: " + to_string(login_user) + "\n";
-	//if (login_token != 0 || login_token != -1) //cout << packet;
-	SendPacket(2, "tankIDName|" + uname + "\ntankIDPass|" + upass + "\nrequestedName|SmellZero\nf|1\nprotocol|127\ngame_version|" + ver + "\nfz|5367464\nlmode|0\ncbits|0\nplayer_age|18\nGDPR|1\nhash2|" + hash2 + "\nmeta|" + generateMeta() + "\nfhash|-716928004\nrid|" + generateRid() + "\nplatformID|0\ndeviceVersion|0\ncountry|us\nhash|" + hash + "\nmac|" + generateMac() + "\nwk|" + generateRid() + "\nzf|-496303939" + token, peer);
-	//currentWorld = "";
-}
-void GrowtopiaBot::packet_type3(string text)
-{
-	if (text.find("action|log\nmsg|") != std::string::npos) {
-		string t = explode("msg|", text)[1];
-		cout << "Message: " << t << endl;
-	}
-	//dbgPrint("[" + uname + " ]Some text is here: " + text);
-	if (text.find("LOGON ATTEMPTS") != string::npos)
-	{
-		//cout << "Wrong username / password!. (LOGON ATTEMPTS)";
-	}
-	if (text.find("password is wrong") != string::npos)
-	{
-		//cout << "Wrong password!";
-	}
-	//if (text.find("action|log\n") != std::string::npos) cout << uname << " " << text << endl;
-	if (text.find("action|logon_fail") != string::npos)
-	{
-		connectClient();
-		objects.clear();
+void input() {
+	int c = 0;
+	while (1) {
+		string data;
+		getline(cin, data);
+		if (data == "/bot") {
+			if (bot1.getPeer()) cout << bot1.uname << " At " << bot1.world->name << endl;
+		}
+		else if (data.find("/say ") != std::string::npos) BroadCastPacket(2, "action|input\n|text|" + data.substr(5));
+		else if (data == "/status") {
+			string status = "";
+			if (bot1.getPeer()); status += "BOT 1: ON\n";
+			cout << status << endl;
+		}
+		else if (data=="/pos") getBotPos();
+		else if (data=="/help") cout << "Console Command: /clear, go <name>, /status, /bot (print bot world), /say <text>,/pos" << endl;
+		else if (data.find("/go ") != std::string::npos) {
+			string wr = data.substr(4);
+			BroadCastGoWorld(wr);
+			cout << "Going to: " << wr << endl;
+		}
+		else if (data=="/clear") system("clear");
 	}
 }
 
-void GrowtopiaBot::packet_type6(string text)
-{
-	//dbgPrint("Some text is here: " + text);
-	SendPacket(2, "action|enter_game\n", peer);
-	enet_host_flush(client);
+GrowtopiaBot makeBot(string user, string pass, string host, int port, string vers, string wname) {
+	GrowtopiaBot bot = {user, pass, host, port};
+	bot.gameVersion = vers;
+	bot.currentWorld = wname;
+	bot.userInit();
+	bots.push_back(bot);
+	return bot;
 }
-
-void GrowtopiaBot::packet_unknown(ENetPacket* packet)
-{
-	//dbgPrint("Got unknown packet type: " + std::to_string(GetMessageTypeFromPacket(packet)));
-	//dbgPrint("Packet size is " + std::to_string(packet->dataLength));
+void botSetup() {
+	ifstream i("config.json");
+	json j;
+	i >> j;
+	init();
+	system("clear");
+	string user1 = j["bot1"].get<string>(), pass1 = j["pass1"].get<string>();
+	string vers = j["gtversion"].get<string>();
+	string wn = j["home"].get<string>();
+	bot1 = makeBot(user1, pass1,"213.179.209.168", 17198, vers, wn);
+	while (true) {
+		bot1.eventLoop();
+	}
 }
-void GrowtopiaBot::WhenConnected()
-{
-	cout << uname << " Connected to server!" << endl;
-}
-
-void GrowtopiaBot::WhenDisconnected()
-{
-	cout << uname << " Disconnected from server..." << endl;
-	connectClient();
-}
-int counter = 0; // 10ms per step
-uint64_t newPut = 0;
-uint64_t GetCurrentTimeInternal() {
-	auto duration = std::chrono::system_clock::now().time_since_epoch();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-}
-
-void GrowtopiaBot::userInit() {
-	connectClient();
-	//cout << flush;
+int main() {
+	std::thread thr(input);
+	thr.detach();
+	botSetup();
 }
