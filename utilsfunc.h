@@ -2,6 +2,7 @@
 
 #include <string>
 //#include <Windows.h>
+#include "corefunc.h"
 #include "json.hpp"
 using namespace std;
 
