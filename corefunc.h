@@ -22,13 +22,13 @@
 
 #pragma once
 //Customing GrowID
-string Growid_acc = "sakgay31";
+string Growid_acc = "capcitest1";
 
 //Customing Password
 string Password_acc = "loler1234@";
 
-//Customing Gmail
-string Gmail_acc = "Gmail";
+//Customing Gmail ( At least put a random gmail. Dont add @gmail.com )
+string Gmail_acc = "testgmail";
 
 //Customing Start From (Account)
 int START_ACC = 1;
