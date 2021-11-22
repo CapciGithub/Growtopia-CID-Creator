@@ -38,7 +38,7 @@ void botSetup() {
 	string user1 = j["bot1"].get<string>(), pass1 = j["pass1"].get<string>();
 	string vers = j["gtversion"].get<string>();
 	string wn = j["home"].get<string>();
-	bot1 = makeBot(user1, pass1,"213.179.209.168", 17258, vers, wn);
+	bot1 = makeBot(user1, pass1,"213.179.209.168", 17198, vers, wn);
 	while (true) {
 		bot1.eventLoop();
 	}
