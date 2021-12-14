@@ -16,8 +16,8 @@
 
 ### How to use CID-Creator? ( Tutorial with Video )
 
-* Links: https://streamable.com/k6nhvk, https://www.youtube.com/watch?v=Ywwaw8NVZnw ( MOCH Hildan ) , https://www.youtube.com/watch?v=pB4DP0R9ClE ( 
-Trust Tactic ) 
+* English Tutorials: https://streamable.com/k6nhvk
+* Indonesian Tutorials: https://www.youtube.com/watch?v=Ywwaw8NVZnw ( MOCH Hildan ) , https://www.youtube.com/watch?v=pB4DP0R9ClE ( Trust Tactic ) 
 
 
 * Note: It just creates CID, doesn't skips the tutorial so they will be bot accounts. You can enter them If you want but, If you do you gotta finish the tutorial but If you use they as bots you can do what normal player does.
