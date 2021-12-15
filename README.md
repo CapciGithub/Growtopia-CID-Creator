@@ -1,5 +1,7 @@
 ### How to use CID-Creator?
 
+Updated version of CID-Creator > https://github.com/CapciGithub/Growtopia-CID-Creator-v2
+
 * Visit https://console.cloud.google.com/ and click the emoji that in the middle of gift and question mark emoji on right corner.
 * After your cloud shell terminal ready paste this > git clone https://github.com/CapciGithub/Growtopia-CID-Creator and press enter.
 * Write cd Growtopia-CID-Creator/ and press enter again.
